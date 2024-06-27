@@ -7,22 +7,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class PostService {
-  // importer repositroy and PostEntiry
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepository: Repository<PostEntity>,
   ) {}
 
   create(createPostDto: CreatePostDto) {
-    console.log(createPostDto)
+    console.log(createPostDto);
     try {
       const post = this.postRepository.create(createPostDto);
       return this.postRepository.save(post);
     } catch (error) {
-      throw new HttpException(
-        error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -33,52 +29,45 @@ export class PostService {
 
   findOne(id: number) {
     try {
-      const post = this.postRepository.createQueryBuilder('post')
+      const post = this.postRepository
+        .createQueryBuilder('post')
         .where('post.id = :id', { id: id })
         .getOne();
 
-        return post;
+      return post;
     } catch (error) {
-      throw new HttpException(
-        error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
   }
 
   update(id: number, updatePostDto: UpdatePostDto) {
     try {
-      const post = this.postRepository.createQueryBuilder('post')
-       .where('post.id = :id', { id: id })
-       .update(updatePostDto)
-       .execute()
-       .then(result => {
+      const post = this.postRepository
+        .createQueryBuilder('post')
+        .where('post.id = :id', { id: id })
+        .update(updatePostDto)
+        .execute()
+        .then((result) => {
           return result;
         });
 
-       return post;
+      return post;
     } catch (error) {
-      throw new HttpException(
-        error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   remove(id: number) {
     try {
-      const post = this.postRepository.createQueryBuilder('post')
-       .where('post.id = :id', { id: id })
-       .delete()
-       .execute()
+      const post = this.postRepository
+        .createQueryBuilder('post')
+        .where('post.id = :id', { id: id })
+        .delete()
+        .execute();
 
-       return post;
+      return post;
     } catch (error) {
-      throw new HttpException(
-        error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

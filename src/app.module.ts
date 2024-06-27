@@ -11,7 +11,7 @@ import { CategoryModule } from './category/category.module';
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type:'postgres',
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: parseInt(process.env.PORT),
       username: process.env.DB_USER,
@@ -22,7 +22,7 @@ import { CategoryModule } from './category/category.module';
     }),
     PostModule,
     UserModule,
-    CategoryModule
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
