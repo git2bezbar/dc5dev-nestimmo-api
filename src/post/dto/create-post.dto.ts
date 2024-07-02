@@ -1,4 +1,4 @@
 export class CreatePostDto {
-    title: string;
-    description: string;
+  title: string;
+  description: string;
 }

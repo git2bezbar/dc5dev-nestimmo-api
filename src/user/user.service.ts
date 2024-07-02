@@ -12,17 +12,13 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-
   create(createUserDto: CreateUserDto) {
     try {
       const user = this.userRepository.create(createUserDto);
 
       return this.userRepository.save(user);
     } catch (error) {
-      throw new HttpException(
-        error.message,
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
