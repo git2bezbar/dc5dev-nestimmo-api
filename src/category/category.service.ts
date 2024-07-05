@@ -1,9 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CategoryEntity } from './entities/category.entity';
 import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class CategoryService {
@@ -13,7 +13,6 @@ export class CategoryService {
   ) {}
 
   create(createCategoryDto: CreateCategoryDto) {
-    console.log(createCategoryDto);
     try {
       const category = this.categoryRepository.create(createCategoryDto);
       return this.categoryRepository.save(category);
@@ -23,20 +22,15 @@ export class CategoryService {
   }
 
   findAll() {
-    const categoryList = this.categoryRepository
-      .createQueryBuilder('category')
-      .getMany();
-    return categoryList;
+    return this.categoryRepository.createQueryBuilder('category').getMany();
   }
 
   findOne(id: number) {
     try {
-      const category = this.categoryRepository
+      return this.categoryRepository
         .createQueryBuilder('category')
         .where('category.id = :id', { id: id })
         .getOne();
-
-      return category;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
