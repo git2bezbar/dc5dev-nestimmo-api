@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { CategoryEntity } from 'src/category/entities/category.entity';
 
 @Controller('posts')
 export class PostController {
@@ -21,8 +23,9 @@ export class PostController {
   }
 
   @Get()
-  findAll() {
-    return this.postService.findAll();
+  findAll(@Query('categoryId') categoryId?: CategoryEntity['id']) {
+    console.log(categoryId ? categoryId : 'nsm');
+    return this.postService.findAll(categoryId ? categoryId : undefined);
   }
 
   @Get(':id')

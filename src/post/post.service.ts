@@ -4,6 +4,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PostEntity } from './entities/post.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CategoryEntity } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class PostService {
@@ -22,8 +23,21 @@ export class PostService {
     }
   }
 
-  findAll() {
-    return this.postRepository.find({ relations: { category: true } });
+  async findAll(categoryId?: CategoryEntity['id']) {
+    try {
+      if (categoryId) {
+        return await this.postRepository.find({
+          where: { category: { id: categoryId } },
+          relations: { category: true },
+        });
+      } else {
+        return await this.postRepository.find({
+          relations: { category: true },
+        });
+      }
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   findOne(id: number) {
